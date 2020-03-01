@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { runInNewContext } from 'vm';
 
 (async () => {
 
@@ -13,6 +14,13 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
+  function validateUrl(url: string): boolean{
+    const re = /https?:\/\/.+/   // test for http(s)://
+    const reObj = RegExp(re)
+    return reObj.test(url)
+  }
+
+  // ** Should I create new directories and modules for a new restful endpoint?
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
@@ -28,9 +36,39 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-
   //! END @TODO1
-  
+
+  // req.query.image_url
+  app.get("/filteredimage", async ( req, res ) => {
+      //console.log(req.query);  
+      const url = req.query.image_url;
+      if ( !( url && validateUrl(url) ) ){
+        return res.status(400).send({message:"Please send a good url"});
+      }
+      // validate the image_url query
+      // await extracts the payload of the resolved promise
+      try{
+        var path = await filterImageFromURL(url);
+        //console.log('path:', path);
+        
+      } catch(e){
+        // catch a reject() from the promise in filterImageFromUrl()
+        // This reject() will occur if Jimp.read(url) throws an error, because the url isn't an image
+        console.log(e)
+        res.status(422).send("The url is probably not an image")
+      } 
+      // send the response with file, and make callback when file transfer is done.
+      res.status(200).sendFile(path, (err) => {
+        if (err) { 
+          return res.status(500).send("error in sending file");
+        } else{
+          deleteLocalFiles([path]); // if err is false, the file was sent, so remove file from server
+        }
+      });
+
+  });
+
+
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {

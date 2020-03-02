@@ -560,11 +560,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{HOST}}/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
+							"raw": "http://localhost:{{PORT}}/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg",
 							"protocol": "http",
 							"host": [
-								"{{HOST}}"
+								"localhost"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"filteredimage"
 							],
@@ -780,9 +781,15 @@
 	],
 	"variable": [
 		{
-			"id": "6f284b29-3056-4793-b925-d84d7cbfdaef",
+			"id": "62de8976-6797-4339-844c-141bc2f1d605",
 			"key": "HOST",
 			"value": "localhost:8082",
+			"type": "string"
+		},
+		{
+			"id": "243aaf07-fc00-4c18-b943-1c1e36d0d444",
+			"key": "PORT",
+			"value": "8082",
 			"type": "string"
 		}
 	],

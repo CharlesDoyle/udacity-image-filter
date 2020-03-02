@@ -59,7 +59,7 @@ import {filterImageFromURL, deleteLocalFiles, requireAuth} from './util/util';
         // This reject() occurs if Jimp.read(url) throws 'could not find MIME' error,
         // because the url isn't an image, or the url returns 404 not found.
         console.log('catch on server.ts:', e)
-        return res.status(422).send("The url is not an image")
+        return res.status(422).send("The url does not point to an image")
       } 
       // send response with file, and make callback when file transfer is done.
       // the arg in callback is an error object; if no error, it will be null

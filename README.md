@@ -48,10 +48,7 @@ Add your own domain name and have it point to the running services (try adding a
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
 
 
-Here is my Project2 submission information:
-
-My GitHub repository for the project:
-https://github.com/CharlesDoyle/udacity-image-filter
+### Here is my Project2 submission information:
 
 ** The required screenshot and Postman collection are in the project folder on GitHub
 

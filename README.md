@@ -46,3 +46,16 @@ Prevent requests without valid authentication headers.
 
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+
+
+Here is my Project2 submission information:
+
+My GitHub repository for the project:
+https://github.com/CharlesDoyle/udacity-image-filter
+
+** The required screenshot and Postman collection are in the project folder on GitHub
+
+** I added the authentication feature to prevent invalid requests, as described in the 'Stand Out (Optional)' section of the project rubric.  My Postman collection has authenticated requests with a good JWT in the headers.
+
+** ElasticBeanstalk host url:  
+http://udagram-image-filter-dev.us-west-2.elasticbeanstalk.com

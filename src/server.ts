@@ -14,6 +14,8 @@ import {filterImageFromURL, deleteLocalFiles, requireAuth} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
+  // a helper function I wrote to validate a url. This function checks if
+  // the url has 'http://' or 'https://' at the beginning of the string.
   function validateUrl(url: string): boolean{
     const re = /https?:\/\/.+/   // test for http(s)://
     const reObj = RegExp(re)

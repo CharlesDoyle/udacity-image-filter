@@ -1,8 +1,8 @@
 import fs from 'fs';
 import Jimp = require('jimp'); // JS Image Manipulation Program
-import { reject } from 'bluebird';
+// import { reject } from 'bluebird';
 //import Jimp from 'jimp';
-//import { reject } from 'bluebird';
+
 
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -11,28 +11,6 @@ import { reject } from 'bluebird';
 //    inputURL: string - a publicly accessible url to an image file
 // RETURNS
 //    an absolute path to a filtered image locally saved file
-export async function xfilterImageFromURL(inputURL: string): Promise<string>{
-    return new Promise( async resolve => {
-        console.log('in filterImageFromURL');
-        const photo = await Jimp.read(inputURL);
-        console.log('photo', photo);
-        const outpath = '../tmp/filtered.'+Math.floor(Math.random() * 2000)+'.jpg';
-        console.log(outpath);
-        //const __dirname = '~/Documents/Classes/Udacity/CloudDeveloper';
-        // filter the image by resizing, setting JPEG quality, grayscale
-        // await for the operations to end before moving on
-        await photo
-        .resize(256, 256) // resize
-        .quality(60) // set JPEG quality
-        .greyscale() // set greyscale
-        .write(__dirname + outpath, (img)=>{
-            resolve(__dirname+outpath);
-        // mime type is: image/jpeg    
-        });
-    });
-}
-
-
 export function filterImageFromURL(inputURL: string): Promise<string>{
     return new Promise( async (resolve, reject) => {
         try{
@@ -40,9 +18,9 @@ export function filterImageFromURL(inputURL: string): Promise<string>{
             //console.log('photo', photo);
             const relpath = '/tmp/filtered.'+Math.floor(Math.random() * 2000)+'.jpg';
             const outpath = __dirname + relpath // __dirname is full path of current dir
-            //__dirname is the current directory, which is image-filter/src/util
-            // __dirname must be used because that path
-            // will exist on the EB environment in the cloud.
+            //__dirname is the current directory, which is .../image-filter/src/util
+            // __dirname must be used in outpath because its value
+            // will exist on the EB environment in the cloud, unlike hardcoding a full path.
             // filter the image by resizing, setting JPEG quality, grayscale
             //console.log('w h:', photo.bitmap.width, photo.bitmap.height); // width and height
             photo
@@ -55,14 +33,11 @@ export function filterImageFromURL(inputURL: string): Promise<string>{
             //resolve(__dirname+outpath);
             // image.write(path, callback)
         } catch(e){
-            console.log(e)
-            reject(e)
+            console.log('error:', e)
+            reject(e) // send error msg to the server.ts catch block
         }
     });
 }
-
-
-
 
 // deleteLocalFiles
 // helper function to delete files on the local disk

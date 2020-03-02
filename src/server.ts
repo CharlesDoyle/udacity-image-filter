@@ -48,21 +48,25 @@ import { runInNewContext } from 'vm';
       // validate the image_url query
       // await extracts the payload of the resolved promise
       try{
+        // path is assigned if the promise is resolved by Jimp.read(url) finding an image
         var path = await filterImageFromURL(url);
         //console.log('path:', path);
         
       } catch(e){
         // catch a reject() from the promise in filterImageFromUrl()
-        // This reject() will occur if Jimp.read(url) throws an error, because the url isn't an image
-        console.log(e)
-        res.status(422).send("The url is probably not an image")
+        // This reject() occurs if Jimp.read(url) throws 'could not find MIME' error,
+        // because the url isn't an image, or the url returns 404 not found.
+        console.log('catch on server.ts:', e)
+        return res.status(422).send("The url is not an image")
       } 
-      // send the response with file, and make callback when file transfer is done.
+      // send response with file, and make callback when file transfer is done.
+      // the arg in callback is an error object; if no error, it will be null
       res.status(200).sendFile(path, (err) => {
         if (err) { 
           return res.status(500).send("error in sending file");
         } else{
-          deleteLocalFiles([path]); // if err is false, the file was sent, so remove file from server
+          // if err is false, the file was sent, so remove file from server
+          deleteLocalFiles([path]); 
         }
       });
 

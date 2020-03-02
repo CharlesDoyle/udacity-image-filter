@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
-import { runInNewContext } from 'vm';
+import {filterImageFromURL, deleteLocalFiles, requireAuth} from './util/util';
+//import { runInNewContext } from 'vm';
 
 (async () => {
 
@@ -39,7 +39,7 @@ import { runInNewContext } from 'vm';
   //! END @TODO1
 
   // req.query.image_url
-  app.get("/filteredimage", async ( req, res ) => {
+  app.get("/filteredimage", requireAuth, async ( req, res ) => {
       //console.log(req.query);  
       const url = req.query.image_url;
       if ( !( url && validateUrl(url) ) ){
